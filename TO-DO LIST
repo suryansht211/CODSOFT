@@ -1,0 +1,107 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Task {
+    string description;
+    bool completed;
+
+    Task(string desc) : description(desc), completed(false) {}
+};
+
+class ToDoList {
+private:
+    vector<Task> tasks;
+
+public:
+    void addTask(string description) {
+        tasks.push_back(Task(description));
+        cout << "Task added successfully.\n";
+    }
+
+    void viewTasks() {
+        if (tasks.empty()) {
+            cout << "No tasks available.\n";
+        } else {
+            cout << "Tasks:\n";
+            for (size_t i = 0; i < tasks.size(); ++i) {
+                cout << i + 1 << ". " << tasks[i].description;
+                if (tasks[i].completed) {
+                    cout << " (Completed)";
+                }
+                cout << "\n";
+            }
+        }
+    }
+
+    void markAsCompleted(int index) {
+        if (index >= 1 && index <= tasks.size()) {
+            tasks[index - 1].completed = true;
+            cout << "Task marked as completed.\n";
+        } else {
+            cout << "Invalid task index.\n";
+        }
+    }
+
+    void removeTask(int index) {
+        if (index >= 1 && index <= tasks.size()) {
+            tasks.erase(tasks.begin() + index - 1);
+            cout << "Task removed successfully.\n";
+        } else {
+            cout << "Invalid task index.\n";
+        }
+    }
+};
+
+int main() {
+    ToDoList toDoList;
+    int choice;
+
+    do {
+        cout << "\n===== TO-DO LIST MANAGER =====\n";
+        cout << "1. Add Task\n";
+        cout << "2. View Tasks\n";
+        cout << "3. Mark Task as Completed\n";
+        cout << "4. Remove Task\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string taskDescription;
+                cout << "Enter task description: ";
+                cin.ignore(); // Clear input buffer
+                getline(cin, taskDescription);
+                toDoList.addTask(taskDescription);
+                break;
+            }
+            case 2:
+                toDoList.viewTasks();
+                break;
+            case 3: {
+                int taskIndex;
+                cout << "Enter the task index to mark as completed: ";
+                cin >> taskIndex;
+                toDoList.markAsCompleted(taskIndex);
+                break;
+            }
+            case 4: {
+                int taskIndex;
+                cout << "Enter the task index to remove: ";
+                cin >> taskIndex;
+                toDoList.removeTask(taskIndex);
+                break;
+            }
+            case 5:
+                cout << "Exiting the program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
